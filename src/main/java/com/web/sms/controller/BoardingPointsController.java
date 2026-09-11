@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.web.sms.service.BoardingPointsService;
+import com.web.sms.dto.BoardingPointsDto;
 import com.web.sms.entity.BoardingPoints;
 
 @RestController
+@CrossOrigin(originPatterns = "*")
 @RequestMapping("/boarding-points")
 public class BoardingPointsController {
 
@@ -35,8 +38,8 @@ public class BoardingPointsController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BoardingPoints> getBoardingPointById(@PathVariable("id") long id) {
-       BoardingPoints boarding = boardingPointsService.getBoardingPointById(id);
+    public ResponseEntity<BoardingPointsDto> getBoardingPointById(@PathVariable("id") long id) {
+    	BoardingPointsDto boarding = boardingPointsService.getBoardingPointById(id);
         return ResponseEntity.ok(boarding);
     }
 
@@ -47,7 +50,15 @@ public class BoardingPointsController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<BoardingPoints>> getAllBoardingPoints() {
+    public ResponseEntity<List<BoardingPointsDto>> getAllBoardingPoints() {
         return ResponseEntity.ok(boardingPointsService.getAllBoardingPoints());
+    }
+    
+    @GetMapping("/by-bus/{id}")
+    public ResponseEntity<List<BoardingPoints>> getAllBusesByBusId(@PathVariable long id)
+    {
+    		List<BoardingPoints> bps = boardingPointsService.getBoardingPointsByBusId(id);
+    		
+    		return ResponseEntity.ok(bps);
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.web.sms.dto.StudentDto;
 import com.web.sms.entity.Student;
 import com.web.sms.service.StudentService;
 
@@ -41,9 +42,10 @@ public class StudentController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Student> getStudentById(@PathVariable("id") long id)
+	public ResponseEntity<StudentDto> getStudentById(@PathVariable("id") long id)
 	{
-		Student std = studentService.getStudentById(id);
+		StudentDto std = studentService.getStudentById(id);
+		
 		return ResponseEntity.ok(std);
 	}
 	
@@ -55,9 +57,9 @@ public class StudentController {
 	}
 	
 	@GetMapping("/")
-	public ResponseEntity<List<Student>> getAllStudents()
+	public ResponseEntity<List<StudentDto>> getAllStudents()
 	{
-		List<Student> students = studentService.getAllStudents();
+		List<StudentDto> students = studentService.getAllStudents();
 		return ResponseEntity.ok(students);
 	}
 }

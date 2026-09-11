@@ -1,13 +1,16 @@
 package com.web.sms.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.web.sms.dto.BoardingPointsDto;
 import com.web.sms.entity.BoardingPoints;
 import com.web.sms.entity.Bus;
 import com.web.sms.repository.BoardingPointsRepository;
+import com.web.sms.repository.BusRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -17,12 +20,26 @@ public class BoardingPointsServiceImpl implements BoardingPointsService {
 	@Autowired
     private BoardingPointsRepository boardingPointsRepository;
 	@Autowired
+	private BusRepository busRepository;
+	@Autowired
 	private BusService busService;
 
+	public BoardingPointsDto toDto(BoardingPoints boardingPoints) {
+        BoardingPointsDto dto = new BoardingPointsDto();
+        dto.setId(boardingPoints.getId());
+        dto.setStationName(boardingPoints.getStationName());
+        dto.setFeeAmount(boardingPoints.getFeeAmount());
+
+        
+        dto.setBusDto(busService.getBusById(boardingPoints.getBus().getId()));
+
+        return dto;
+    }
+	
     @Override
     @Transactional
     public BoardingPoints addBoardingPoints(BoardingPoints boardingPoints) {
-    		Bus b = busService.getBusById(boardingPoints.getBus().getId());
+    		Bus b = busRepository.findById(boardingPoints.getBus().getId()).get();
     		boardingPoints.setBus(b);
         return boardingPointsRepository.save(boardingPoints);
     }
@@ -39,7 +56,7 @@ public class BoardingPointsServiceImpl implements BoardingPointsService {
                 existing.setFeeAmount(boardingPoints.getFeeAmount());
             }
             if (boardingPoints.getBus() != null) {
-            		Bus b = busService.updateBus(boardingPoints.getBus());
+            	Bus b = busRepository.findById(boardingPoints.getBus().getId()).get();
                 existing.setBus(b);
                 
             }
@@ -48,9 +65,9 @@ public class BoardingPointsServiceImpl implements BoardingPointsService {
     }
 
     @Override
-    public BoardingPoints getBoardingPointById(long id) {
-        return boardingPointsRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("BoardingPoint not found"));
+    public BoardingPointsDto getBoardingPointById(long id) {
+        BoardingPoints bp = boardingPointsRepository.findById(id).get();
+        return toDto(bp);
     }
 
     @Override
@@ -59,8 +76,19 @@ public class BoardingPointsServiceImpl implements BoardingPointsService {
     }
 
     @Override
-    public List<BoardingPoints> getAllBoardingPoints() {
-        return boardingPointsRepository.findAll();
+    public List<BoardingPointsDto> getAllBoardingPoints() {
+        List<BoardingPoints> boardingPoints = boardingPointsRepository.findAll();
+        List<BoardingPointsDto> dtos = new ArrayList<>();
+        for (BoardingPoints bp : boardingPoints) {
+			dtos.add(toDto(bp));
+		}
+        return dtos;
+    }
+    
+    @Override
+    public List<BoardingPoints> getBoardingPointsByBusId(long id)
+    {
+    		return boardingPointsRepository.findAllByBus_Id(id);
     }
 
 }

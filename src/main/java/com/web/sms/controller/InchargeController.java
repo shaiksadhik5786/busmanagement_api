@@ -1,5 +1,6 @@
 package com.web.sms.controller;
 
+import com.web.sms.dto.InchargeDto;
 import com.web.sms.entity.Incharge;
 import com.web.sms.service.InchargeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,20 +32,20 @@ public class InchargeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Incharge> getInchargeById(@PathVariable("id") long id) {
-        Incharge incharge = inchargeService.getInchargeById(id);
-        return new ResponseEntity<>(incharge, HttpStatus.OK);
+    public ResponseEntity<InchargeDto> getInchargeById(@PathVariable("id") long id) {
+        InchargeDto incharge = inchargeService.getInchargeById(id);
+        return ResponseEntity.ok(incharge);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteInchargeById(@PathVariable("id") long id) {
         inchargeService.deleteInchargeById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<Incharge>> getAllIncharges() {
-        List<Incharge> incharges = inchargeService.getAllIncharges();
-        return new ResponseEntity<>(incharges, HttpStatus.OK);
+    public ResponseEntity<List<InchargeDto>> getAllIncharges() {
+        List<InchargeDto> incharges = inchargeService.getAllIncharges();
+        return ResponseEntity.ok(incharges);
     }
 }

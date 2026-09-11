@@ -4,12 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.web.sms.dto.BusDto;
 import com.web.sms.entity.Bus;
 import com.web.sms.service.BusService;
 
 import java.util.List;
 
 @RestController
+@CrossOrigin(originPatterns = "*")
 @RequestMapping("/buses")
 public class BusController {
 
@@ -30,8 +32,8 @@ public class BusController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Bus> getBusById(@PathVariable long id) {
-        Bus bus = busService.getBusById(id);
+    public ResponseEntity<BusDto> getBusById(@PathVariable long id) {
+        BusDto bus = busService.getBusById(id);
         return ResponseEntity.ok(bus);
     }
 
@@ -42,8 +44,8 @@ public class BusController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<Bus>> getAllBuses() {
-        List<Bus> buses = busService.getAllBuses();
+    public ResponseEntity<List<BusDto>> getAllBuses() {
+        List<BusDto> buses = busService.getAllBuses();
         return ResponseEntity.ok(buses);
     }
 }

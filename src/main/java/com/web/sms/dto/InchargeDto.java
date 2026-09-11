@@ -1,21 +1,12 @@
-package com.web.sms.entity;
+package com.web.sms.dto;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+public class InchargeDto {
 
-@Entity
-public class Incharge {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
     private String teacherId;
     private String name;
     private String phoneNumber;
     private String email;
-    private String password;
     private String address;
     private String department;
     private String designation;
@@ -50,12 +41,6 @@ public class Incharge {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
 	public String getAddress() {
 		return address;
 	}
@@ -80,7 +65,6 @@ public class Incharge {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-    
     
     
 }
