@@ -10,7 +10,7 @@ import com.web.sms.entity.Student;
 public interface StudentRepository extends JpaRepository<Student, Long>{
 
 	// Basic finders
-    Optional<Student> findByStudentId(String studentId);
+    Student findByStudentId(String studentId);
     Optional<Student> findByEmail(String email);
     Optional<Student> findByPhoneNumber(String phoneNumber);
 

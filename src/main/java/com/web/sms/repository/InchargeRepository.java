@@ -6,4 +6,5 @@ import com.web.sms.entity.Incharge;
 
 public interface InchargeRepository extends JpaRepository<Incharge, Long> {
 
+	Incharge findByTeacherId(String teacherId);
 }
