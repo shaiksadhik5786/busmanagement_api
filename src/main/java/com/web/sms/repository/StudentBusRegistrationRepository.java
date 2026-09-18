@@ -8,4 +8,5 @@ public interface StudentBusRegistrationRepository extends JpaRepository<StudentB
 
 
     void deleteByStudentId(Long studentId);
+    StudentBusRegistration findByStudentId(Long studentId);
 }
